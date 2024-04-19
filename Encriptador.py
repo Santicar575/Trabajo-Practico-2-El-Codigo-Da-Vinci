@@ -18,7 +18,11 @@ def agregar_marco(imagen_array):
     return imagen_array
 
 def aplicar_filtro(tamaño_iamgen, imagen_array):
-    agregar_marco(imagen_array,tamaño_iamgen)
+    imagen_array = agregar_marco(imagen_array,tamaño_iamgen)
+    imagen_array_filtro = np.copy(imagen_array)
+    for i in range(2, tamaño_imagen):
+        for j in range(2, tamaño_imagen):
+            imagen_array[i][j] = imagen_array[i-2][j-2]
 
 imagen_array = agregar_marco(imagen_array)
 print(imagen_array.shape)
