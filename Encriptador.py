@@ -13,6 +13,13 @@ tamaño_imagen = len(imagen_array)
 print(tamaño_imagen)
 
 def agregar_marco(imagen_array):
+    """
+    Funcion que agrega un marco a una imagen
+    Args:
+        imagen_array: np.array
+    Returns:
+        imagen_array: np.array
+    """
     npad = ((2,2),(2,2),(0,0))
     imagen_array = np.pad(imagen_array, pad_width=npad, mode='edge')
     return imagen_array
@@ -31,6 +38,13 @@ imagen.save("baboon_marco.png")
 
 
 def encriptado(mensaje): 
+    """
+    Funcion que encripta un mensaje en base a un diccionario de encriptacion
+    Args:
+        mensaje: str
+    Returns:
+        mensaje_encriptado: list 
+    """
     mensaje = mensaje.lower()
     mensaje_encriptado = []
     for char in mensaje: 
