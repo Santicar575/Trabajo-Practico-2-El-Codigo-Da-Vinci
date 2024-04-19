@@ -29,10 +29,10 @@ def pixel_suavisado(imagen_array, i, j):
     pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
-    imagen_array_filtro = np.copy( agregar_marco(imagen_array))
+    imagen_array_marco = np.copy(agregar_marco(imagen_array))
     for i in range(2, tamaño_imagen_original):
         for j in range(2, tamaño_imagen_original):
-            imagen_array[i][j] = pixel_suavisado(imagen_array_filtro, i, j)
+            imagen_array[i-2][j-2] = pixel_suavisado(imagen_array_marco, i, j)
 
 def encriptado(mensaje): 
     """
