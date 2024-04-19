@@ -29,8 +29,13 @@ def pixel_suavisado(imagen_array, x, y):
     for n in range(-2,3):
         for k in range(-2,3):
             entorno.append(imagen_array[x+n][y+k])
-    print(entorno)
-    print(entorno[24][0])
+    #primer cuadrante 
+    primer_cuadrante =[]
+    
+
+
+    # print(entorno)
+    # print(entorno[24][0])
     pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
