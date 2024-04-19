@@ -13,6 +13,16 @@ def agregar_marco(imagen_array):
     imagen_array = np.pad(imagen_array, pad_width=npad, mode='edge')
     return imagen_array
 
+def calc_varianza(lista:list[tuple[int,int,int]]) -> tuple[float,float,float]:
+    """
+    Funcion que calcula la varianza de una lista de tuplas
+    Args:
+        lista: list[tuple[int,int,int]]
+    Returns:
+        varianza: tuple[float,float,float]
+    """
+    pass
+
 def pixel_suavisado(imagen_array, x, y):
     entorno = []
     for n in range(-2,3):
@@ -48,6 +58,7 @@ def encriptado(mensaje,dic_encriptacion):
             mensaje_encriptado.append(-1)
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
+
 def main():
     dic_encriptacion = {
     'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10,
