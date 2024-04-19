@@ -9,26 +9,23 @@ dic_encriptacion = {
 }
 imagen = Image.open("baboon.png")
 imagen_array = np.array(imagen)
-tamaño_imagen = len(imagen_array)
-print(tamaño_imagen)
+tamaño_imagen_original = len(imagen_array)
+print(tamaño_imagen_original)
 
 def agregar_marco(imagen_array):
     npad = ((2,2),(2,2),(0,0))
     imagen_array = np.pad(imagen_array, pad_width=npad, mode='edge')
     return imagen_array
 
-def aplicar_filtro(tamaño_iamgen, imagen_array):
-    imagen_array = agregar_marco(imagen_array,tamaño_iamgen)
-    imagen_array_filtro = np.copy(imagen_array)
-    for i in range(2, tamaño_imagen):
-        for j in range(2, tamaño_imagen):
-            imagen_array[i][j] = imagen_array[i-2][j-2]
+def pixel_suavisado(imagen_array, i, j):
+    
+    pass
 
-imagen_array = agregar_marco(imagen_array)
-print(imagen_array.shape)
-imagen = Image.fromarray(imagen_array)
-imagen.save("baboon_marco.png")
-
+def aplicar_filtro(tamaño_imagen_original, imagen_array):
+    imagen_array_filtro = np.copy( agregar_marco(imagen_array))
+    for i in range(2, tamaño_imagen_original):
+        for j in range(2, tamaño_imagen_original):
+            imagen_array[i][j] = pixel_suavisado(imagen_array_filtro, i, j)
 
 def encriptado(mensaje): 
     mensaje = mensaje.lower()
@@ -43,3 +40,8 @@ def encriptado(mensaje):
             mensaje_encriptado.append(-1)
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
+
+imagen_array = agregar_marco(imagen_array)
+print(imagen_array.shape)
+imagen = Image.fromarray(imagen_array)
+imagen.save("baboon_marco.png")
