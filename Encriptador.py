@@ -24,3 +24,18 @@ imagen_array = agregar_marco(imagen_array)
 print(imagen_array.shape)
 imagen = Image.fromarray(imagen_array)
 imagen.save("baboon_marco.png")
+
+
+def encriptado(mensaje): 
+    mensaje = mensaje.lower()
+    mensaje_encriptado = []
+    for char in mensaje: 
+        if char in dic_encriptacion.keys(): 
+            if len(str(dic_encriptacion[char])) > 1:
+                for dig in str(dic_encriptacion[char]): 
+                    mensaje_encriptado.append(int(dig) + 1)
+            else: 
+                mensaje_encriptado.append(dic_encriptacion[char]+1)
+            mensaje_encriptado.append(-1)
+    mensaje_encriptado.append(0)     
+    return mensaje_encriptado
