@@ -15,14 +15,18 @@ def agregar_marco(imagen_array):
 
 def pixel_suavisado(imagen_array, x, y):
     entorno = []
-    for n in range(-2,3):
-        for k in range(-2,3):
-            entorno.append(imagen_array[x+n][y+k])
-    #primer cuadrante 
-    primer_cuadrante =[]
+    for i in range(-2,3):
+        for j in range(-2,3):
+            entorno.append(imagen_array[x+i][y+j])
+    entorno = np.array(entorno)
+    #Cuadrantes 
+    for i in range(-2,3): 
+        for j in range(-2,3):
+            primer_cuadrante =[entorno[x+i:x][y+j:y]]
+            segundo_cuadrante = [entorno[x:x+i][y+j:y]]
+            tercer_cuadrante = [entorno[x+i:x][y:y+j]]
+            cuarto_cuadrante = [entorno[x:x+i][y+i:y]]
     
-
-
     # print(entorno)
     # print(entorno[24][0])
     pass
