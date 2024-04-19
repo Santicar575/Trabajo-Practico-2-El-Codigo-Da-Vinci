@@ -24,13 +24,13 @@ def agregar_marco(imagen_array):
     imagen_array = np.pad(imagen_array, pad_width=npad, mode='edge')
     return imagen_array
 
-def pixel_suavisado(imagen_array, i, j):
+def pixel_suavisado(imagen_array, x, y):
+    entorno = []
     for n in range(-2,3):
         for k in range(-2,3):
-            imagen_array[i-n:i][j-k:j]
-
-
-    
+            entorno.append(imagen_array[x+n][y+k])
+    print(entorno)
+    print(entorno[24][0])
     pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
@@ -60,7 +60,8 @@ def encriptado(mensaje):
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
 
-imagen_array = agregar_marco(imagen_array)
-print(imagen_array.shape)
-imagen = Image.fromarray(imagen_array)
-imagen.save("baboon_marco.png")
+pixel_suavisado(agregar_marco(imagen_array), 2, 2)
+# imagen_array = agregar_marco(imagen_array)
+# print(imagen_array.shape)
+# imagen = Image.fromarray(imagen_array)
+# imagen.save("baboon_marco.png")
