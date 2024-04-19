@@ -25,6 +25,11 @@ def agregar_marco(imagen_array):
     return imagen_array
 
 def pixel_suavisado(imagen_array, i, j):
+    for n in range(-2,3):
+        for k in range(-2,3):
+            imagen_array[i-n:i][j-k:j]
+
+
     
     pass
 
