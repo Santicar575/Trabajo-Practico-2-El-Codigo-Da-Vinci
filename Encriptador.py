@@ -30,14 +30,23 @@ def pixel_suavisado(imagen_array, x, y):
             entorno.append(imagen_array[x+i][y+j])
     entorno = np.array(entorno)
     #Cuadrantes 
+    primer_cuadrante= []
+    segundo_cuadrante = []
+    tercer_cuadrante = []
+    cuarto_cuadrante = []
     for i in range(-2,3): 
         for j in range(-2,3):
-            primer_cuadrante =[entorno[x+i:x][y+j:y]]
-            segundo_cuadrante = [entorno[x:x+i][y+j:y]]
-            tercer_cuadrante = [entorno[x+i:x][y:y+j]]
-            cuarto_cuadrante = [entorno[x:x+i][y+i:y]]
-    
-    # print(entorno)
+            primer_cuadrante =[entorno[x+i:x,y+j:y]]
+            segundo_cuadrante = [entorno[x:x+i,y+j:y]]
+            tercer_cuadrante = [entorno[x+i:x,y:y+j]]
+            cuarto_cuadrante = [entorno[x:x+i,y+i:y]]
+        
+    primer_cuadrante = np.array(primer_cuadrante)
+    segundo_cuadrante = np.array(segundo_cuadrante)
+    tercer_cuadrante = np.array(tercer_cuadrante )
+    cuarto_cuadrante = np.array(cuarto_cuadrante)
+    print(entorno)
+    print(primer_cuadrante)
     # print(entorno[24][0])
     pass
 
