@@ -55,26 +55,6 @@ def pixel_suavizado(imagen_array, x, y):
     cuadrante_menor_varianza = dicc_cuadrantes[min(dicc_cuadrantes.keys())]
     promedio = promedio_cuadrante(cuadrante_menor_varianza)
     return np.array(promedio)
-    # print(calc_varianza(primer_cuadrante))
-    # print(sum(calc_varianza(primer_cuadrante)))
-    # print(primer_cuadrante)
-    # print(segundo_cuadrante)
-    # print(tercer_cuadrante)
-    # print(cuarto_cuadrante)
-    # for i in range(-2,3): 
-    #     for j in range(-2,3):
-    #         primer_cuadrante +=[entorno[x+i:x,y+j:y]]
-    #         segundo_cuadrante += [entorno[x:x+i,y+j:y]]
-    #         tercer_cuadrante += [entorno[x+i:x,y:y+j]]
-    #         cuarto_cuadrante += [entorno[x:x+i,y+i:y]]
-        
-    # primer_cuadrante = np.array(primer_cuadrante)
-    # segundo_cuadrante = np.array(segundo_cuadrante)
-    # tercer_cuadrante = np.array(tercer_cuadrante )
-    # cuarto_cuadrante = np.array(cuarto_cuadrante)
-    # print(entorno)
-    # print(segundo_cuadrante)
-    # # print(entorno[24][0])
     pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
@@ -82,8 +62,6 @@ def aplicar_filtro(tamaño_imagen_original, imagen_array):
     for i in range(2, tamaño_imagen_original):
         for j in range(2, tamaño_imagen_original):
             imagen_array[i-2,j-2] = pixel_suavizado(imagen_array_marco, i, j)
-    # i,j = np.meshgrid(np.arange(2, tamaño_imagen_original),np.arange(2, tamaño_imagen_original),indexing='ij')
-    # imagen_array[0:tamaño_imagen_original, 0:tamaño_imagen_original] = pixel_suavisado(imagen_array_marco, i-2, j-2)
     return imagen_array
 
 def encriptado(mensaje,dic_encriptacion): 
