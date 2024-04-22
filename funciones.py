@@ -1,4 +1,3 @@
-from PIL import Image
 import numpy as np
 
 def agregar_marco(imagen_array):
@@ -83,3 +82,21 @@ def encriptado(mensaje,dic_encriptacion):
             mensaje_encriptado.append(-1)
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
+def encriptar(num,entorno):
+    #entorno = np.flatten(entorno)
+
+    pass
+
+
+
+def imagen_encriptada(msg_encriptado,imagen_array): 
+    contador = 0
+    for i in range(len(imagen_array),2): 
+        for j in range(len(imagen_array),2): 
+            imagen_array[i+2,j+2] = encriptar(msg_encriptado[contador],imagen_array[i:i+2,j:j+2])
+            if msg_encriptado[contador] == 0:
+                return imagen_array
+            contador += 1
+
+            
+ 
