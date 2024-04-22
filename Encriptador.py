@@ -1,4 +1,6 @@
 import funciones
+from PIL import Image 
+import numpy as np 
 
 def main():
     dic_encriptacion = {
