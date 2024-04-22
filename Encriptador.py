@@ -13,7 +13,7 @@ def agregar_marco(imagen_array):
     imagen_array = np.pad(imagen_array, pad_width=npad, mode='edge')
     return imagen_array
 
-def calc_varianza(lista:list[tuple[int,int,int]]) -> tuple[float,float,float]:
+def calc_varianza(lista:np.array) -> tuple[float,float,float]:
     """
     Funcion que calcula la varianza de una lista de tuplas
     Args:
@@ -21,33 +21,51 @@ def calc_varianza(lista:list[tuple[int,int,int]]) -> tuple[float,float,float]:
     Returns:
         varianza: tuple[float,float,float]
     """
-    pass
+    return np.var(lista[:,:,0]), np.var(lista[:,:,1]), np.var(lista[:,:,2])
 
 def pixel_suavisado(imagen_array, x, y):
     entorno = []
+    fila = []
     for i in range(-2,3):
         for j in range(-2,3):
-            entorno.append(imagen_array[x+i][y+j])
+            fila.append(imagen_array[x+i,y+j])
+        entorno.append(fila)
+        fila = []
     entorno = np.array(entorno)
-    #Cuadrantes 
-    primer_cuadrante= []
-    segundo_cuadrante = []
-    tercer_cuadrante = []
-    cuarto_cuadrante = []
-    for i in range(-2,3): 
-        for j in range(-2,3):
-            primer_cuadrante =[entorno[x+i:x,y+j:y]]
-            segundo_cuadrante = [entorno[x:x+i,y+j:y]]
-            tercer_cuadrante = [entorno[x+i:x,y:y+j]]
-            cuarto_cuadrante = [entorno[x:x+i,y+i:y]]
+    #Cuadrantes
+    print(entorno[0:3,0:3])
+    primer_cuadrante= entorno[0:3,0:3]
+    segundo_cuadrante = entorno[0:3,2:]
+    tercer_cuadrante = entorno[2:,0:3]
+    cuarto_cuadrante = entorno[2:,2:]
+    dicc_cuadrantes = {
+        sum(calc_varianza(primer_cuadrante)): primer_cuadrante,
+        sum(calc_varianza(segundo_cuadrante)): segundo_cuadrante,
+        sum(calc_varianza(tercer_cuadrante)): tercer_cuadrante,
+        sum(calc_varianza(cuarto_cuadrante)): cuarto_cuadrante
+    }
+    cuadrante_menor_varianza = dicc_cuadrantes[min(dicc_cuadrantes.keys())]
+    print(cuadrante_menor_varianza)
+    # print(calc_varianza(primer_cuadrante))
+    # print(sum(calc_varianza(primer_cuadrante)))
+    # print(primer_cuadrante)
+    # print(segundo_cuadrante)
+    # print(tercer_cuadrante)
+    # print(cuarto_cuadrante)
+    # for i in range(-2,3): 
+    #     for j in range(-2,3):
+    #         primer_cuadrante +=[entorno[x+i:x,y+j:y]]
+    #         segundo_cuadrante += [entorno[x:x+i,y+j:y]]
+    #         tercer_cuadrante += [entorno[x+i:x,y:y+j]]
+    #         cuarto_cuadrante += [entorno[x:x+i,y+i:y]]
         
-    primer_cuadrante = np.array(primer_cuadrante)
-    segundo_cuadrante = np.array(segundo_cuadrante)
-    tercer_cuadrante = np.array(tercer_cuadrante )
-    cuarto_cuadrante = np.array(cuarto_cuadrante)
-    print(entorno)
-    print(primer_cuadrante)
-    # print(entorno[24][0])
+    # primer_cuadrante = np.array(primer_cuadrante)
+    # segundo_cuadrante = np.array(segundo_cuadrante)
+    # tercer_cuadrante = np.array(tercer_cuadrante )
+    # cuarto_cuadrante = np.array(cuarto_cuadrante)
+    # print(entorno)
+    # print(segundo_cuadrante)
+    # # print(entorno[24][0])
     pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
