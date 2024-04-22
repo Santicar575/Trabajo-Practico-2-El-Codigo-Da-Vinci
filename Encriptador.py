@@ -32,7 +32,7 @@ def promedio_cuadrante(lista:np.array) -> tuple[float,float,float]:
     """
     return np.mean(lista[:,:,0]), np.mean(lista[:,:,1]), np.mean(lista[:,:,2])
 
-def pixel_suavisado(imagen_array, x, y):
+def pixel_suavizado(imagen_array, x, y):
     entorno = []
     fila = []
     for i in range(-2,3):
@@ -81,7 +81,7 @@ def aplicar_filtro(tamaño_imagen_original, imagen_array):
     imagen_array_marco = np.copy(agregar_marco(imagen_array))
     for i in range(2, tamaño_imagen_original):
         for j in range(2, tamaño_imagen_original):
-            imagen_array[i-2,j-2] = pixel_suavisado(imagen_array_marco, i, j)
+            imagen_array[i-2,j-2] = pixel_suavizado(imagen_array_marco, i, j)
     # i,j = np.meshgrid(np.arange(2, tamaño_imagen_original),np.arange(2, tamaño_imagen_original),indexing='ij')
     # imagen_array[0:tamaño_imagen_original, 0:tamaño_imagen_original] = pixel_suavisado(imagen_array_marco, i-2, j-2)
     return imagen_array
