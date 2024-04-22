@@ -15,13 +15,22 @@ def agregar_marco(imagen_array):
 
 def calc_varianza(lista:np.array) -> tuple[float,float,float]:
     """
-    Funcion que calcula la varianza de una lista de tuplas
+    Funcion que calcula la varianza de un array de numpy
     Args:
         lista: list[tuple[int,int,int]]
     Returns:
         varianza: tuple[float,float,float]
     """
     return np.var(lista[:,:,0]), np.var(lista[:,:,1]), np.var(lista[:,:,2])
+def promedio_cuadrante(lista:np.array) -> tuple[float,float,float]:
+    """
+    Funcion que calcula el promedio de un array de numpy
+    Args:
+        lista: list[tuple[int,int,int]]
+    Returns:
+        promedio: tuple[float,float,float]
+    """
+    return np.mean(lista[:,:,0]), np.mean(lista[:,:,1]), np.mean(lista[:,:,2])
 
 def pixel_suavisado(imagen_array, x, y):
     entorno = []
@@ -33,7 +42,6 @@ def pixel_suavisado(imagen_array, x, y):
         fila = []
     entorno = np.array(entorno)
     #Cuadrantes
-    print(entorno[0:3,0:3])
     primer_cuadrante= entorno[0:3,0:3]
     segundo_cuadrante = entorno[0:3,2:]
     tercer_cuadrante = entorno[2:,0:3]
@@ -45,7 +53,8 @@ def pixel_suavisado(imagen_array, x, y):
         sum(calc_varianza(cuarto_cuadrante)): cuarto_cuadrante
     }
     cuadrante_menor_varianza = dicc_cuadrantes[min(dicc_cuadrantes.keys())]
-    print(cuadrante_menor_varianza)
+    promedio = promedio_cuadrante(cuadrante_menor_varianza)
+    return np.array(promedio)
     # print(calc_varianza(primer_cuadrante))
     # print(sum(calc_varianza(primer_cuadrante)))
     # print(primer_cuadrante)
@@ -72,7 +81,10 @@ def aplicar_filtro(tamaño_imagen_original, imagen_array):
     imagen_array_marco = np.copy(agregar_marco(imagen_array))
     for i in range(2, tamaño_imagen_original):
         for j in range(2, tamaño_imagen_original):
-            imagen_array[i-2][j-2] = pixel_suavisado(imagen_array_marco, i, j)
+            imagen_array[i-2,j-2] = pixel_suavisado(imagen_array_marco, i, j)
+    # i,j = np.meshgrid(np.arange(2, tamaño_imagen_original),np.arange(2, tamaño_imagen_original),indexing='ij')
+    # imagen_array[0:tamaño_imagen_original, 0:tamaño_imagen_original] = pixel_suavisado(imagen_array_marco, i-2, j-2)
+    return imagen_array
 
 def encriptado(mensaje,dic_encriptacion): 
     """
@@ -106,8 +118,11 @@ def main():
     imagen = Image.open("baboon.png")
     imagen_array = np.array(imagen)
     tamaño_imagen_original = len(imagen_array)
-    print(tamaño_imagen_original)
-    pixel_suavisado(agregar_marco(imagen_array), 2, 2)
+    imagen_array = aplicar_filtro(tamaño_imagen_original, imagen_array)
+    imagen = Image.fromarray(imagen_array)
+    imagen.save("baboon_filtro.png")
+    # print(tamaño_imagen_original)
+    # pixel_suavisado(agregar_marco(imagen_array), 2, 2)
     # imagen_array = agregar_marco(imagen_array)
     # print(imagen_array.shape)
     # imagen = Image.fromarray(imagen_array)
