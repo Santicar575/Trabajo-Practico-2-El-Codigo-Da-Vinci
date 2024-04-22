@@ -55,7 +55,6 @@ def pixel_suavizado(imagen_array, x, y):
     cuadrante_menor_varianza = dicc_cuadrantes[min(dicc_cuadrantes.keys())]
     promedio = promedio_cuadrante(cuadrante_menor_varianza)
     return np.array(promedio)
-    pass
 
 def aplicar_filtro(tamaño_imagen_original, imagen_array):
     imagen_array_marco = np.copy(agregar_marco(imagen_array))
@@ -99,12 +98,6 @@ def main():
     imagen_array = aplicar_filtro(tamaño_imagen_original, imagen_array)
     imagen = Image.fromarray(imagen_array)
     imagen.save("baboon_filtro.png")
-    # print(tamaño_imagen_original)
-    # pixel_suavisado(agregar_marco(imagen_array), 2, 2)
-    # imagen_array = agregar_marco(imagen_array)
-    # print(imagen_array.shape)
-    # imagen = Image.fromarray(imagen_array)
-    # imagen.save("baboon_marco.png")
 
 if __name__ == "__main__":
     main()
