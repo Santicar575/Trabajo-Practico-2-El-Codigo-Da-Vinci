@@ -1,5 +1,5 @@
 import numpy as np
-
+from PIL import Image
 def agregar_marco(imagen_array):
     """
     Funcion que agrega un marco a una imagen
@@ -62,7 +62,7 @@ def aplicar_filtro(tamaño_imagen_original, imagen_array):
             imagen_array[i-2,j-2] = pixel_suavizado(imagen_array_marco, i, j)
     return imagen_array
 
-def encriptado(mensaje,dic_encriptacion): 
+def encriptar_msg(mensaje,dic_encriptacion): 
     """
     Funcion que encripta un mensaje en base a un diccionario de encriptacion
     Args:
@@ -82,21 +82,40 @@ def encriptado(mensaje,dic_encriptacion):
             mensaje_encriptado.append(-1)
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
-def encriptar(num,entorno):
-    #entorno = np.flatten(entorno)
-
-    pass
-
+def encriptar(num,entorno):   
+    canal_rojo = np.array([entorno[0,0,0],entorno[0,1,0],entorno[1,0,0]])
+    canal_verde = np.array([entorno[0,0,1],entorno[0,1,1],entorno[1,0,1]])
+    canal_azul = np.array([entorno[0,0,2],entorno[0,1,2],entorno[1,0,2]])
+    varianzas = {
+        np.var(canal_rojo):  (canal_rojo,0),
+        np.var(canal_verde): (canal_verde,1),
+        np.var(canal_azul):  (canal_azul,2)
+    }
+    
+    canal_menor_varianza = varianzas[min(varianzas.keys())][0]
+    index_canal = varianzas[min(varianzas.keys())][1]
+    promedio = np.mean(canal_menor_varianza) 
+    res = promedio + num
+    if res > 255:
+        res = res-255
+    pixel_res = entorno[1,1]
+    pixel_res[index_canal] = res
+    return pixel_res
 
 
 def imagen_encriptada(msg_encriptado,imagen_array): 
     contador = 0
-    for i in range(len(imagen_array),2): 
-        for j in range(len(imagen_array),2): 
-            imagen_array[i+2,j+2] = encriptar(msg_encriptado[contador],imagen_array[i:i+2,j:j+2])
+    for i in range(0,len(imagen_array),2): 
+        for j in range(0,len(imagen_array),2): 
+            imagen_array[i+1,j+1] = encriptar(msg_encriptado[contador],imagen_array[i:i+2,j:j+2])
             if msg_encriptado[contador] == 0:
                 return imagen_array
             contador += 1
 
-            
+def main():
+    n = np.array(Image.open("baboon.png")) 
+    imagen_encriptada([1,2,3,0],n)
+    pass
+if __name__ == "__main__":
+    main()           
  
