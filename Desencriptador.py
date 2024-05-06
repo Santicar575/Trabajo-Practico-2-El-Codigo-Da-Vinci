@@ -1,4 +1,4 @@
-from Funciones import *
+from funciones import *
 from PIL import Image 
 import numpy as np 
 
@@ -12,8 +12,8 @@ def main():
     }
 
     print("≡≡Desencriptador≡≡")
-    #path = input("Ingrese nombre del archivo encriptado: ")
-    imagen = Image.open("encrypted_baboon.png")
+    path = input("Ingrese nombre del archivo encriptado: ")
+    imagen = Image.open(path)
     imagen_array = np.array(imagen)
     lista_msg_encriptado = desencriptar_imagen(imagen_array)
     print(lista_msg_encriptado)

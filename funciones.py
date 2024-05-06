@@ -1,7 +1,6 @@
 import numpy as np
-from PIL import Image
 
-def agregar_marco(imagen_array):
+def agregar_marco(imagen_array:np.array)->np.array:
     """
     Funcion que agrega un marco a una imagen
     Args:
@@ -32,7 +31,7 @@ def promedio_cuadrante(lista:np.array) -> tuple[float,float,float]:
     """
     return np.mean(lista[:,:,0]), np.mean(lista[:,:,1]), np.mean(lista[:,:,2])
 
-def pixel_suavizado(imagen_array, x, y):
+def pixel_suavizado(imagen_array:np.array, x:int, y:int)->np.array:
     entorno = []
     fila = []
     for i in range(-2,3):
@@ -56,14 +55,14 @@ def pixel_suavizado(imagen_array, x, y):
     promedio = promedio_cuadrante(cuadrante_menor_varianza)
     return np.array(promedio)
 
-def aplicar_filtro(tamaño_imagen_original, imagen_array):
+def aplicar_filtro(tamaño_imagen_original:int, imagen_array:np.array)->np.array:
     imagen_array_marco = np.copy(agregar_marco(imagen_array))
     for i in range(2, tamaño_imagen_original):
         for j in range(2, tamaño_imagen_original):
             imagen_array[i-2,j-2] = pixel_suavizado(imagen_array_marco, i, j)
     return imagen_array
 
-def encriptar_msg(mensaje,dic_encriptacion): 
+def encriptar_msg(mensaje:str,dic_encriptacion:dict)->list: 
     """
     Funcion que encripta un mensaje en base a un diccionario de encriptacion
     Args:
@@ -83,7 +82,7 @@ def encriptar_msg(mensaje,dic_encriptacion):
             mensaje_encriptado.append(-1)
     mensaje_encriptado.append(0)     
     return mensaje_encriptado
-def encriptar(num,entorno):   
+def encriptar(num:int,entorno:np.array)->tuple:   
     """ 
     Funcion que encripta un numero en un pixel 
     Args:
@@ -111,7 +110,7 @@ def encriptar(num,entorno):
     return pixel_res
 
 
-def encriptar_imagen(msg_encriptado,imagen_array): 
+def encriptar_imagen(msg_encriptado:list,imagen_array:np.array)->np.array: 
     """
     Funcion que encripta un mensaje en una imagen 
     Args:
@@ -127,7 +126,14 @@ def encriptar_imagen(msg_encriptado,imagen_array):
             if msg_encriptado[contador] == 0:
                 return imagen_array
             contador += 1
-def desencriptar_entorno(entorno): 
+def desencriptar_entorno(entorno:np.array)->int:
+    """
+    Funcion que desencripta un entorno de una imagen
+    Args:
+        entorno: np.array
+    Returns:
+        res: int
+    """ 
     canal_rojo = np.array([entorno[0,0,0],entorno[0,1,0],entorno[1,0,0]])
     canal_verde = np.array([entorno[0,0,1],entorno[0,1,1],entorno[1,0,1]])
     canal_azul = np.array([entorno[0,0,2],entorno[0,1,2],entorno[1,0,2]])
@@ -145,7 +151,14 @@ def desencriptar_entorno(entorno):
     return res
 
 
-def desencriptar_imagen(imagen_array):
+def desencriptar_imagen(imagen_array:np.array)->list:
+    """
+    Funcion que desencripta una imagen
+    Args:
+        imagen_array: np.array
+    Returns:
+        msg_encriptado: list, lista de numeros que representan el mensaje encriptado
+    """
     msg_encriptado =[]
     contador = 0
     for i in range(0,len(imagen_array),2): 
@@ -155,7 +168,15 @@ def desencriptar_imagen(imagen_array):
                 return msg_encriptado
             contador += 1
     
-def desencriptar_mensaje(msg_encriptado,dic_desencriptacion): 
+def desencriptar_mensaje(msg_encriptado:list,dic_desencriptacion:dict)->str: 
+    """"
+    Funcion que desencripta un mensaje en base a un diccionario de desencriptacion
+    Args:
+        msg_encriptado: list
+        dic_desencriptacion: dict
+    Returns:
+        msg_desencriptado: str
+    """
     msg_desencriptado = ""
     for i in range(len(msg_encriptado)): 
         if msg_encriptado[i] != -1 and msg_encriptado[i] != 0: 
@@ -164,7 +185,7 @@ def desencriptar_mensaje(msg_encriptado,dic_desencriptacion):
     while msg_encriptado[contador] != 0:
         num_actual = ""
         while msg_encriptado[contador] != -1:
-            num_actual+=str(msg_encriptado[contador]) #if msg_encriptado[contador] != 10 else "1"
+            num_actual+=str(msg_encriptado[contador])
             contador+=1
         try:
             msg_desencriptado += dic_desencriptacion[np.int64(num_actual)] if num_actual != "" else ""
