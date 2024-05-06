@@ -1,4 +1,4 @@
-from funciones import *
+from Funciones import *
 from PIL import Image 
 import numpy as np 
 
@@ -17,8 +17,8 @@ def main():
     imagen = Image.open(path)
     imagen_array = np.array(imagen)
     tamaño_imagen_original = len(imagen_array)
-    imagen_array = aplicar_filtro(tamaño_imagen_original, imagen_array)
-    imagen_array = imagen_encriptada(encriptar_msg(msg,dic_encriptacion), imagen_array)
+    #imagen_array = aplicar_filtro(tamaño_imagen_original, imagen_array)
+    imagen_array = encriptar_imagen(encriptar_msg(msg,dic_encriptacion), imagen_array)
     imagen = Image.fromarray(imagen_array)
     imagen.save(name_new_image)
 

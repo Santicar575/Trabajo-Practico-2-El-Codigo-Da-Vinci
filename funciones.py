@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+
 def agregar_marco(imagen_array):
     """
     Funcion que agrega un marco a una imagen
@@ -95,11 +96,10 @@ def encriptar(num,entorno):
     canal_verde = np.array([entorno[0,0,1],entorno[0,1,1],entorno[1,0,1]])
     canal_azul = np.array([entorno[0,0,2],entorno[0,1,2],entorno[1,0,2]])
     varianzas = {
-        np.var(canal_rojo):  (canal_rojo,0),
+        np.var(canal_azul):  (canal_azul,2),
         np.var(canal_verde): (canal_verde,1),
-        np.var(canal_azul):  (canal_azul,2)
+        np.var(canal_rojo):  (canal_rojo,0)
     }
-    
     canal_menor_varianza = varianzas[min(varianzas.keys())][0]
     index_canal = varianzas[min(varianzas.keys())][1]
     promedio = np.mean(canal_menor_varianza) 
@@ -111,7 +111,7 @@ def encriptar(num,entorno):
     return pixel_res
 
 
-def imagen_encriptada(msg_encriptado,imagen_array): 
+def encriptar_imagen(msg_encriptado,imagen_array): 
     """
     Funcion que encripta un mensaje en una imagen 
     Args:
@@ -127,26 +127,22 @@ def imagen_encriptada(msg_encriptado,imagen_array):
             if msg_encriptado[contador] == 0:
                 return imagen_array
             contador += 1
-def desencriptar(entorno): 
+def desencriptar_entorno(entorno): 
     canal_rojo = np.array([entorno[0,0,0],entorno[0,1,0],entorno[1,0,0]])
     canal_verde = np.array([entorno[0,0,1],entorno[0,1,1],entorno[1,0,1]])
     canal_azul = np.array([entorno[0,0,2],entorno[0,1,2],entorno[1,0,2]])
     varianzas = {
-        np.var(canal_rojo):  (canal_rojo,0),
+        np.var(canal_azul):  (canal_azul,2),
         np.var(canal_verde): (canal_verde,1),
-        np.var(canal_azul):  (canal_azul,2)
+        np.var(canal_rojo):  (canal_rojo,0)
     }
-    
     canal_menor_varianza = varianzas[min(varianzas.keys())][0]
     index_canal = varianzas[min(varianzas.keys())][1]
-    promedio = int(np.mean(canal_menor_varianza))
-    print(promedio)
-    print(entorno[1,1,index_canal])
+    promedio = np.mean(canal_menor_varianza, dtype=np.int64)
     res = entorno[1,1,index_canal] - promedio
-    print(res)
     if res < 0 and res != -1:
         res = res + 256
-    return int(res)
+    return res
 
 
 def desencriptar_imagen(imagen_array):
@@ -154,12 +150,12 @@ def desencriptar_imagen(imagen_array):
     contador = 0
     for i in range(0,len(imagen_array),2): 
         for j in range(0,len(imagen_array),2): 
-            msg_encriptado.append(desencriptar(imagen_array[i:i+2,j:j+2]))
+            msg_encriptado.append(desencriptar_entorno(imagen_array[i:i+2,j:j+2]))
             if msg_encriptado[contador] == 0:
                 return msg_encriptado
             contador += 1
     
-def desencriptador(msg_encriptado,dic_desencriptacion): 
+def desencriptar_mensaje(msg_encriptado,dic_desencriptacion): 
     msg_desencriptado = ""
     for i in range(len(msg_encriptado)): 
         if msg_encriptado[i] != -1 and msg_encriptado[i] != 0: 
@@ -168,20 +164,12 @@ def desencriptador(msg_encriptado,dic_desencriptacion):
     while msg_encriptado[contador] != 0:
         num_actual = ""
         while msg_encriptado[contador] != -1:
-            num_actual+=str(msg_encriptado[contador]) if msg_encriptado[contador] != 10 else "1"
+            num_actual+=str(msg_encriptado[contador]) #if msg_encriptado[contador] != 10 else "1"
             contador+=1
-        msg_desencriptado += dic_desencriptacion[int(num_actual)] if num_actual != "" else ""
+        try:
+            msg_desencriptado += dic_desencriptacion[np.int64(num_actual)] if num_actual != "" else ""
+        except KeyError:
+            msg_desencriptado += f"[error en {num_actual} posicion: {contador}]"
         contador+=1
 
-    return msg_desencriptado
-    
-    
-
-def main():
-    n = np.array(Image.open("baboon.png")) 
-    imagen_encriptada([1,2,3,0],n)
-    
-    pass
-if __name__ == "__main__":
-    main()           
- 
+    return msg_desencriptado        
